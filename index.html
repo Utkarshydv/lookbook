@@ -3,46 +3,192 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lookbook — Flipbook (Dark)</title>
+  <title>Lookbook</title>
   <style>
-    :root{
-      --bg:#0a0a0a;
-      --fg:#fff;
-      --accent:#f08;
-      --panel:#111;
+    :root {
+      --bg: #030303ff;
+      --fg: #f5f5f5;
+      --accent: #00530bff;
+      --panel: #010101ff;
+      --highlight: #1a1a1aff;
     }
-    *{box-sizing:border-box;margin:0;padding:0;}
-    body{background:var(--bg);color:var(--fg);font-family:sans-serif;overflow:hidden;}
-    .topbar{position:fixed;top:0;left:0;width:100%;height:50px;background:var(--panel);display:flex;align-items:center;justify-content:space-between;padding:0 10px;z-index:100;}
-    .topbar h1{font-size:16px;}
-    .topbar .buttons{display:flex;gap:10px;}
-    .topbar button{background:none;border:none;color:var(--fg);cursor:pointer;font-size:14px;}
-    .container{position:absolute;top:50px;bottom:0;left:0;right:0;display:flex;}
-    .sidebar{width:120px;background:var(--panel);overflow:auto;padding:10px;}
-    .sidebar img{width:100%;margin-bottom:10px;cursor:pointer;border:2px solid transparent;}
-    .sidebar img.active{border-color:var(--accent);}
-    .flipbook{flex:1;display:flex;align-items:center;justify-content:center;perspective:2000px;overflow:hidden;}
-    .page{width:80%;height:90%;background:#222;position:absolute;transform-origin:left center;transition:transform 1s;box-shadow:0 0 20px rgba(0,0,0,0.5);overflow:hidden;}
-    .page img{width:100%;height:100%;object-fit:contain;}
-    .controls{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:10px;}
-    .controls button{background:var(--panel);border:none;color:var(--fg);padding:5px 10px;cursor:pointer;}
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "Segoe UI", Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    /* --- Top bar --- */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: var(--panel);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 100;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.6);
+    }
+
+    .topbar .logo img {
+      height: 50px;   /* adjust as needed */
+    }
+
+    .topbar .title {
+      position: fixed;
+      left: 45%;
+      transform: translateX(-50%);
+      font-size: 20px;
+      letter-spacing: 1px;
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .topbar .buttons {
+      display: flex;
+      gap: 18px;
+    }
+
+    .topbar button {
+      background: var(--highlight);
+      border: none;
+      color: var(--fg);
+      font-size: 15px;
+      padding: 6px 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .topbar button:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* --- Layout --- */
+    .container {
+      position: absolute;
+      top: 60px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 120px;
+      background: var(--panel);
+      overflow: auto;
+      padding: 12px;
+      border-right: 1px solid #222;
+    }
+    .sidebar img {
+      width: 100%;
+      margin-bottom: 10px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      border-radius: 4px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .sidebar img:hover {
+      transform: scale(1.05);
+    }
+    .sidebar img.active {
+      border-color: var(--accent);
+    }
+
+    /* Flipbook area */
+    .flipbook {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 2000px;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #000601ff 0%, #010101ff 100%);
+    }
+
+    /* Page styling */
+    .page {
+      width: 70%;     
+      height: 85%;    
+      background: #1c1c1c;
+      position: absolute;
+      transform-origin: left center;
+      transition: transform 0.9s ease;
+      box-shadow: 0 0 15px rgba(0,0,0,0.7);
+      border-radius: 6px;  
+      overflow: hidden;
+    }
+    .page img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;  
+      background: #000;     
+    }
+
+    /* Bottom controls (if needed) */
+    .controls {
+      position: fixed;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+    }
+    .controls button {
+      background: var(--panel);
+      border: none;
+      color: var(--fg);
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .controls button:hover {
+      background: var(--accent);
+    }
   </style>
 </head>
 <body>
+  <!-- Topbar -->
   <div class="topbar">
-    <h1>Lookbook</h1>
+    <!-- Left: Logo -->
+    <div class="logo">
+      <img src="assets/logo.gif" alt="Logo">
+    </div>
+    
+    <!-- Center: Title -->
+    <div class="title">LOOK BOOK</div>
+
+    <!-- Right: Buttons -->
     <div class="buttons">
+      <button id="play">Auto</button>
       <button id="prev">Prev</button>
       <button id="next">Next</button>
-      <button id="play">Autoplay</button>
     </div>
   </div>
+
+  <!-- Main Container -->
   <div class="container">
     <div class="sidebar" id="thumbs"></div>
     <div class="flipbook" id="book"></div>
   </div>
+
   <script>
-    const images=[
+    const images = [
       'assets/Lookbook.png',
       'assets/1.png',
       'assets/2.png',
@@ -50,35 +196,37 @@
       'assets/4.png',
     ];
 
-    const book=document.getElementById('book');
-    const thumbs=document.getElementById('thumbs');
-    let current=0;
-    let autoplay=false;
+    const book = document.getElementById('book');
+    const thumbs = document.getElementById('thumbs');
+    let current = 0;
+    let autoplay = false;
     let timer;
 
+    // Generate pages and thumbs
     images.forEach((src,i)=>{
-      const page=document.createElement('div');
-      page.className='page';
-      page.style.zIndex=images.length-i;
-      const img=document.createElement('img');
-      img.src=src;
+      const page = document.createElement('div');
+      page.className = 'page';
+      page.style.zIndex = images.length - i;
+
+      const img = document.createElement('img');
+      img.src = src;
       page.appendChild(img);
       book.appendChild(page);
 
-      const thumb=document.createElement('img');
-      thumb.src=src;
+      const thumb = document.createElement('img');
+      thumb.src = src;
       thumb.addEventListener('click',()=>goTo(i));
       thumbs.appendChild(thumb);
     });
 
-    const pages=[...document.querySelectorAll('.page')];
+    const pages = [...document.querySelectorAll('.page')];
 
     function render(){
       pages.forEach((p,i)=>{
-        if(i<current){
-          p.style.transform='rotateY(-180deg)';
-        }else{
-          p.style.transform='rotateY(0deg)';
+        if(i < current){
+          p.style.transform = 'rotateY(-180deg)';
+        } else {
+          p.style.transform = 'rotateY(0deg)';
         }
       });
       [...thumbs.children].forEach((t,i)=>{
@@ -87,23 +235,23 @@
     }
 
     function goTo(i){
-      current=Math.max(0,Math.min(images.length-1,i));
+      current = Math.max(0,Math.min(images.length-1,i));
       render();
     }
 
-    document.getElementById('prev').onclick=()=>goTo(current-1);
-    document.getElementById('next').onclick=()=>goTo(current+1);
-    document.getElementById('play').onclick=()=>{
-      autoplay=!autoplay;
+    document.getElementById('prev').onclick = ()=>goTo(current-1);
+    document.getElementById('next').onclick = ()=>goTo(current+1);
+    document.getElementById('play').onclick = ()=>{
+      autoplay = !autoplay;
       if(autoplay){
         timer=setInterval(()=>{
-          if(current<images.length-1){
+          if(current < images.length-1){
             goTo(current+1);
           }else{
             goTo(0);
           }
         },2000);
-      }else{
+      } else {
         clearInterval(timer);
       }
     };
