@@ -160,6 +160,130 @@
     .controls button:hover {
       background: var(--accent);
     }
+    /* ======= MOBILE/TABLET RESPONSIVE OVERRIDES ======= */
+
+/* Touch devices: avoid hover-zoom jitter */
+@media (hover: none) and (pointer: coarse) {
+  .sidebar img:hover { transform: none; }
+}
+
+/* Tablets & small laptops */
+@media (max-width: 900px) {
+  :root {
+    /* Mobile metrics */
+    --tb: 56px;    /* topbar height */
+    --sb: 92px;    /* sidebar (thumb strip) height */
+  }
+
+  /* Respect notches / safe areas */
+  .topbar {
+    height: calc(var(--tb) + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) 12px 0 12px;
+  }
+  .container {
+    top: calc(var(--tb) + env(safe-area-inset-top));
+    flex-direction: column;
+  }
+
+  /* Topbar compaction */
+  .topbar .logo img { height: 36px; }
+  .topbar .title {
+    font-size: 16px;
+    left: 50%;
+    max-width: 48vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .topbar .buttons { gap: 8px; }
+  .topbar button { padding: 6px 10px; font-size: 13px; }
+
+  /* Flipbook takes priority area */
+  .flipbook {
+    order: 1;
+    position: relative;  /* for absolutely-positioned pages */
+    min-height: 0;       /* prevent flex overflow */
+    padding: 8px;
+  }
+
+  /* Sidebar becomes horizontal thumb strip */
+  .sidebar {
+    order: 2;
+    width: 100%;
+    height: var(--sb);
+    display: flex;
+    gap: 8px;
+    border-right: none;
+    border-bottom: 1px solid #222;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scroll-snap-type: x proximity;
+    padding: 8px 10px;
+  }
+  .sidebar img {
+    height: calc(var(--sb) - 16px);
+    width: auto;
+    flex: 0 0 auto;
+    margin: 0;
+    scroll-snap-align: start;
+  }
+
+  /* Page auto-centers and fits viewport minus bars */
+  .page {
+    /* max width for readability, full-bleed if smaller */
+    width: min(100vw - 24px, 820px);
+    /* fill remaining height after topbar + thumb strip */
+    height: calc(100vh - (var(--tb) + env(safe-area-inset-top)) - var(--sb) - 24px);
+    min-height: 220px;
+
+    position: absolute;
+    inset: 0;          /* anchor to flipbook edges */
+    margin: auto;      /* center horizontally & vertically */
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.65);
+  }
+  .page img {
+    object-fit: contain;  /* never crop */
+    background: #000;     /* clean letterbox */
+  }
+
+  /* If you ever show .controls, keep them above the thumb strip */
+  .controls { bottom: calc(var(--sb) + 8px); }
+}
+
+/* Phones */
+@media (max-width: 560px) {
+  :root {
+    --tb: 52px;
+    --sb: 84px;
+  }
+
+  .topbar .title { display: none; } /* prevent crowding */
+  .topbar .buttons { gap: 6px; }
+  .topbar button { font-size: 12px; padding: 4px 10px; }
+
+  .sidebar { gap: 6px; padding: 6px 8px; }
+  .sidebar img { height: calc(var(--sb) - 14px); }
+
+  .page {
+    width: calc(100vw - 12px);
+    height: calc(100vh - (var(--tb) + env(safe-area-inset-top)) - var(--sb) - 12px);
+    border-radius: 6px;
+  }
+}
+
+/* Phones in landscape: shrink thumb strip to free vertical space */
+@media (max-width: 900px) and (orientation: landscape) {
+  :root { --sb: 64px; }
+  .sidebar { height: var(--sb); }
+  .sidebar img { height: calc(var(--sb) - 14px); }
+  .page {
+    height: calc(100vh - (var(--tb) + env(safe-area-inset-top)) - var(--sb) - 16px);
+  }
+}
+
   </style>
 </head>
 <body>
